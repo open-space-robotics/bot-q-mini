@@ -71,6 +71,32 @@ OOOOO.
 ### サブタイトル C2
 OOOOO.
 
+<!--
+Waveshare RP2040-LCD-1.28のセットアップ
+Waveshare RP2040-LCD-1.28という円形LCD + マイコンの装置を用いる．
+PowerPointで表情のモーションを作る関係上，全てWindowsでの開発を前提としている．
+環境セットアップと使い方については下記のリンクを参照．
+https://www.waveshare.com/wiki/RP2040-LCD-1.28
+https://cotechworks.ltt.jp/2024/04/17/post-1463/
+Q mini の表情の作成と読み込み
+パワーポイントのアニメーション機能で表情を作成．
+480 × 480の最低画質でmp4の動画として出力．
+Windowsのコマンドプロンプトを管理者権限で開き，下記のコマンドを実行し，動画処理ツールをインストール．
+$ winget install --id=Gyan.FFmpeg -e
+下記のコマンドで動画をbmp形式の画像群に変換 (importファイル名，30fps，240×240pixel，4桁連番のexportファイル名を指定)．
+$ ffmpeg -i face_blink.mp4 -vf "fps=30,scale=240:240" frame%04d.bmp
+下記のコマンドでbmp形式の画像群をヘッダー情報等を除いたrawデータ群に変換 (1~6に対しての繰り返し処理，importファイル名，exportファイル名を指定)
+$ for %i in (1 2 3 4 5 6) do ffmpeg -i frame000%i.bmp -f rawvideo -pix_fmt rgb565 frame000%i.raw
+Gitの入った環境で下記のコマンドを実行し，フレームデータのヘッダーファイルを作成する．これをrawデータのファイル数だけ繰り返す．
+$ xxd -i frame0001.raw > frame1.h
+その後，各ヘッダーファイルを下記の形式に書き直す．
+#pragma once 
+#include <Arduino.h>
+const uint8_t frame1[] PROGMEM = {
+  0x1F, 0x7C, 0x00, 0xFF, ..., // データたくさん
+};
+あとは，メインコードで作成したヘッダファイルを描画し，理想の表情ができるまで微調整．
+-->
 ---
 
 [トップに戻る](#リポジトリテンプレート)
