@@ -8,7 +8,7 @@
 ![GitHub fork](https://img.shields.io/github/forks/SpaceData-Inc/temp_rep)
 ![GitHub stars](https://img.shields.io/github/stars/SpaceData-Inc/temp_rep)
 
-![SD Robot](img/sd_robot.jpg)
+![SD Robot](img/bot_q_mini.jpg)
 
 
 ## 目次
