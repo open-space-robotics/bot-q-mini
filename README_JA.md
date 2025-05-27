@@ -1,4 +1,4 @@
-# リポジトリテンプレート
+# Q mini
 
 [![README in English](https://img.shields.io/badge/English-d9d9d9)](./README.md)
 [![日本語版 README](https://img.shields.io/badge/日本語-d9d9d9)](./README_JA.md)
@@ -12,91 +12,97 @@
 
 
 ## 目次
-1. [**タイトル A**](#タイトル-a)
-    1. [サブタイトル A1](#サブタイトル-a1)
-    2. [サブタイトル A2](#サブタイトル-a2)
+1. [**Q mini の概要**](#q-mini-の概要)  
+   1. [特徴](#特徴)  
+   2. [使用デバイス](#使用デバイス)
 
-2. [**タイトル B**](#タイトル-b)
-    1. [サブタイトル B1](#サブタイトル-b1)
-    2. [サブタイトル B2](#サブタイトル-b2)
+2. [**開発環境のセットアップ**](#開発環境のセットアップ)  
+   1. [RP2040-LCD-1.28 の準備](#rp2040-lcd-128-の準備)  
+   2. [FFmpeg のインストール](#ffmpeg-のインストール)
 
-3. [**タイトル C**](#タイトル-c)
-    1. [サブタイトル C1](#サブタイトル-c1)
-    2. [サブタイトル C2](#サブタイトル-c2)
+3. [**表情データの作成と変換**](#表情データの作成と変換)  
+   1. [PowerPointでの表情アニメーション作成](#powerpointでの表情アニメーション作成)  
+   2. [動画から画像へ変換](#動画から画像へ変換)  
+   3. [画像からrawデータへ変換](#画像からrawデータへ変換)  
+   4. [C言語ヘッダファイルへの変換](#c言語ヘッダファイルへの変換)
 
 
-## タイトル A
-OOOOO.
+## Q mini の概要
+Q mini は、円形ディスプレイ付きの小型ロボットで、表情を滑らかに表示することで親しみやすいインターフェースを実現します。本リポジトリでは、Windows環境を前提とした開発手順と表情の作成・表示方法をまとめています。
+Q mini は、Waveshare社の RP2040-LCD-1.28 ボードをベースに、PowerPointで作成した表情アニメーションを再生できる小型ロボットです。ロボット本体にLCDを組み込み、温かみのあるインターフェースを実現します。
 
-### サブタイトル A1
-OOOOO.
+### 特徴
+- 円形LCDディスプレイで表情を表示
+- PowerPointで簡単に表情アニメーションを作成可能
+- Windows上での開発に最適化
+- オープンソースで誰でも再現可能
+
+### 使用デバイス
+- [Waveshare RP2040-LCD-1.28](https://www.waveshare.com/wiki/RP2040-LCD-1.28)
+  - 解像度: 240x240 px
+  - 円形1.28インチLCD搭載
+  - RP2040マイコン内蔵
+
+
+## 開発環境のセットアップ
+
+### RP2040-LCD-1.28 の準備
+セットアップ手順は以下を参照してください：
+
+- [Waveshare公式 Wiki](https://www.waveshare.com/wiki/RP2040-LCD-1.28)
+- [使い方の解説（日本語）](https://cotechworks.ltt.jp/2024/04/17/post-1463/)
+
+### FFmpeg のインストール
+画像変換に必要な FFmpeg を Windows にインストールします。
 
 ```
-$ command
-```
-
-| Left align | Right align | Center align |
-|:-----------|------------:|:------------:|
-| This       | This        | This         |
-| column     | column      | column       |
-| will       | will        | will         |
-| be         | be          | be           |
-| left       | right       | center       |
-| aligned    | aligned     | aligned      |
-
-#### 参考
-- [GitHub Flavored Markdown Spec](https://github.github.com/gfm/#introduction)
-- [Markdown記法 チートシート](https://qiita.com/Qiita/items/c686397e4a0f4f11683d)
-
-### サブタイトル A2
-OOOOO.
-
-
-## タイトル B
-OOOOO.
-
-### サブタイトル B1
-OOOOO.
-
-### サブタイトル B2
-OOOOO.
-
-
-## タイトル C
-OOOOO.
-
-### サブタイトル C1
-OOOOO.
-
-### サブタイトル C2
-OOOOO.
-
-<!--
-Waveshare RP2040-LCD-1.28のセットアップ
-Waveshare RP2040-LCD-1.28という円形LCD + マイコンの装置を用いる．
-PowerPointで表情のモーションを作る関係上，全てWindowsでの開発を前提としている．
-環境セットアップと使い方については下記のリンクを参照．
-https://www.waveshare.com/wiki/RP2040-LCD-1.28
-https://cotechworks.ltt.jp/2024/04/17/post-1463/
-Q mini の表情の作成と読み込み
-パワーポイントのアニメーション機能で表情を作成．
-480 × 480の最低画質でmp4の動画として出力．
-Windowsのコマンドプロンプトを管理者権限で開き，下記のコマンドを実行し，動画処理ツールをインストール．
 $ winget install --id=Gyan.FFmpeg -e
-下記のコマンドで動画をbmp形式の画像群に変換 (importファイル名，30fps，240×240pixel，4桁連番のexportファイル名を指定)．
+```
+
+
+## 表情データの作成と変換
+
+### PowerPointでの表情アニメーション作成
+1. PowerPointのアニメーション機能を使って、表情の変化を作成します。
+2. スライドショーを録画し、**mp4形式**で出力してください。
+3. 解像度は最低限 `480x480` を推奨します。
+
+### 動画から画像へ変換
+動画を `240x240` の正方形BMP画像に分割します（30fps）。
+
+```
 $ ffmpeg -i face_blink.mp4 -vf "fps=30,scale=240:240" frame%04d.bmp
-下記のコマンドでbmp形式の画像群をヘッダー情報等を除いたrawデータ群に変換 (1~6に対しての繰り返し処理，importファイル名，exportファイル名を指定)
+```
+
+### 画像からrawデータへ変換
+各BMP画像を `RGB565` の生データに変換します。以下は例です（6枚の場合）:
+
+```
 $ for %i in (1 2 3 4 5 6) do ffmpeg -i frame000%i.bmp -f rawvideo -pix_fmt rgb565 frame000%i.raw
-Gitの入った環境で下記のコマンドを実行し，フレームデータのヘッダーファイルを作成する．これをrawデータのファイル数だけ繰り返す．
-$ xxd -i frame0001.raw > frame1.h
-その後，各ヘッダーファイルを下記の形式に書き直す．
+```
+
+### C言語ヘッダファイルへの変換
+変換した `.raw` ファイルをヘッダーファイルにします。
+生成された `.h` ファイルを以下の形式に修正してください。
+
+```cpp
 #pragma once 
 #include <Arduino.h>
 const uint8_t frame1[] PROGMEM = {
-  0x1F, 0x7C, 0x00, 0xFF, ..., // データたくさん
+  0x1F, 0x7C, 0x00, 0xFF, ..., // RGB565形式のデータ列
 };
-あとは，メインコードで作成したヘッダファイルを描画し，理想の表情ができるまで微調整．
--->
+```
+
+すべてのフレームに対してこれを繰り返してください。
+
+
+## ライセンス
+このプロジェクトは〇〇ライセンスのもと公開されています。詳細はLICENSEファイルをご覧ください。
+
+## 貢献方法
+誰でもこのプロジェクトに貢献できます！
+バグの報告、プルリクエスト、ドキュメントの改善など、お待ちしています。
+
 ---
 
 [トップに戻る](#リポジトリテンプレート)
